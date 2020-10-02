@@ -52,7 +52,9 @@ find dir of the profilel:
 ```
 
 open the following file from the dir, for e.g.:
+```
 "C:\home\yourname\.ipython\profile_default\ipython_config.py"
+```
 
 add the 3 lines:
 ```
@@ -61,5 +63,5 @@ c.InteractiveShellApp.extensions = ['cccomagic']
 c.InteractiveShell.automagic = True
 ```
 
-restart jupyter notebook to make it work, using %config to modify InteractiveShellApp.extensions have no effect.
+Restart jupyter notebook to make it work, using %config to modify InteractiveShellApp.extensions have no effect.
 run cc co will append to the cell below

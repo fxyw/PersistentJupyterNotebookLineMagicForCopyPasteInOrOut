@@ -62,7 +62,7 @@ then run this in the next cell:
 !ipython profile create
 ```
 
-find dir of the profilel:
+find dir of the profile:
 ```
 !ipython locate profile 
 ```
@@ -94,7 +94,7 @@ can also match the cc fuction:
 - shfit-l to `cc -2`
 - alt-l to `cc -3`
 
-We can use ctrl-a, ctrl-c, ctrl-v to achieve `cc i`, with more key strokes, or use In[i] shift-enter (the later one will remove indent and mess the display up). 
+We used `Jupyter.notebook.get_selected_index()-2` for Insert Input from three cells Above, alt-l. We can use ctrl-a, ctrl-c, ctrl-v to achieve `cc i`, with more key strokes, or use In[i] shift-enter (the later one will remove indent and mess the display up). 
 
 Also note that the
  

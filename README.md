@@ -94,7 +94,51 @@ can also match the cc fuction:
 - shfit-l to `cc -2`
 - alt-l to `cc -3`
 
-We used `Jupyter.notebook.get_selected_index()-2` for Insert Input from three cells Above, alt-l. We can use ctrl-a, ctrl-c, ctrl-v to achieve `cc i`, with more key strokes, or use In[i] shift-enter (the later one will remove indent and mess the display up). 
+We used `Jupyter.notebook.get_selected_index()-2` for Insert Input from three cells Above, alt-l.
+```
+%%js
+Jupyter.keyboard_manager.edit_shortcuts.add_shortcut('ctrl-l', {
+    help : 'Insert Input from Above',
+    help_index : 'zz',
+    handler: function(env) {
+        var cm=env.notebook.get_selected_cell().code_mirror;
+        cm.doc.replaceSelection(Jupyter.notebook.get_cell(Jupyter.notebook.get_selected_index()-1).get_text());
+        cm.execCommand('goLineEnd');
+        return false;
+    }}
+);
+Jupyter.keyboard_manager.edit_shortcuts.add_shortcut('shift-l', {
+    help : 'Insert Input from two cells above',
+    help_index : 'zz',
+    handler: function(env) {
+        var cm=env.notebook.get_selected_cell().code_mirror;
+        cm.doc.replaceSelection(Jupyter.notebook.get_cell(Jupyter.notebook.get_selected_index()-2).get_text());
+        cm.execCommand('goLineEnd');
+        return false;
+    }}
+);
+Jupyter.keyboard_manager.edit_shortcuts.add_shortcut('ctrl-shift-l', {
+    help : 'Insert Output from Above',
+    help_index : 'zz',
+    handler: function(env) {
+        var cm=env.notebook.get_selected_cell().code_mirror;
+        cm.doc.replaceSelection(Jupyter.notebook.get_cell(Jupyter.notebook.get_selected_index()-1).output_area.element[0].innerText);
+        cm.execCommand('goLineEnd');
+        return false;
+    }}
+);
+Jupyter.keyboard_manager.edit_shortcuts.add_shortcut('alt-l', {
+    help : 'Insert Input from three cells Above',
+    help_index : 'zz',
+    handler: function(env) {
+        var cm=env.notebook.get_selected_cell().code_mirror;
+        cm.doc.replaceSelection(Jupyter.notebook.get_cell(Jupyter.notebook.get_selected_index()-3).get_text());
+        cm.execCommand('goLineEnd');
+        return false;
+    }}
+);
+```
+We can use ctrl-a, ctrl-c, ctrl-v to achieve `cc i`, with more key strokes, or use In[i] shift-enter (the later one will remove indent and mess the display up). 
 
 Also note that the
  

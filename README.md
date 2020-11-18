@@ -91,8 +91,8 @@ The shortcut in
 
 can also match the cc fuction:
 - ctrl-l to `cc -1` 
-- shfit-l to `cc -2`
-- alt-l to `cc -3`
+- alt-l to `cc -2`
+- ctrl-alt-l to `cc -3`
 
 We used `Jupyter.notebook.get_selected_index()-2` for Insert Input from three cells Above, alt-l.
 ```
@@ -107,7 +107,7 @@ Jupyter.keyboard_manager.edit_shortcuts.add_shortcut('ctrl-l', {
         return false;
     }}
 );
-Jupyter.keyboard_manager.edit_shortcuts.add_shortcut('shift-l', {
+Jupyter.keyboard_manager.edit_shortcuts.add_shortcut('alt-l', {
     help : 'Insert Input from two cells above',
     help_index : 'zz',
     handler: function(env) {
@@ -127,7 +127,7 @@ Jupyter.keyboard_manager.edit_shortcuts.add_shortcut('ctrl-shift-l', {
         return false;
     }}
 );
-Jupyter.keyboard_manager.edit_shortcuts.add_shortcut('alt-l', {
+Jupyter.keyboard_manager.edit_shortcuts.add_shortcut('ctrl-alt-l', {
     help : 'Insert Input from three cells Above',
     help_index : 'zz',
     handler: function(env) {

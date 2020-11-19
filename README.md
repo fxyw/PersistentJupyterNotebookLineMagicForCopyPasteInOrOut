@@ -140,6 +140,7 @@ Jupyter.keyboard_manager.edit_shortcuts.add_shortcut('ctrl-alt-l', {
 ```
 We can use ctrl-a, ctrl-c, ctrl-v to achieve `cc i`, with more key strokes, or use In[i] shift-enter (the later one will remove indent and mess the display up). 
 
+
 Also note that the
  
 `var cell = Jupyter.notebook.get_cell(Jupyter.notebook.get_selected_index())` 
@@ -147,3 +148,8 @@ Also note that the
 way of select current cell will point to the cell below after run by shift-enter, and not overwrite the real current cell.
 We updated cc(i) co(i) to use negative i for the most recent cells, or cells without input prompt number.
 
+IPython magic command %recall or %rep fullfill %cc function for nonnegative input sequence, not inplace, and without arg co -1 in case the last cell have output, in other case the nearest cell with output, still not inplace.
+
+Jupyter environment is uncertain for different instalation methods and versions, or different servers or runs: the customized extension in .ipython\profile_default\ipython_config.py may work and also may not work, similarly for the shortcut definition that is saved to .jupyter\nbconfig\notebook.json. For a foolproof approach we can put these definitions in the .ipython\profile_default\startup folder, and in case it is not called in jupyter notebook initialization, run directly at the notebook first line, for example:
+
+```%run -i C:/Users/frank.wang/.ipython/profile_default/startup/99-last.py```  

@@ -42,6 +42,12 @@ def co(i):
   cell.set_text(cells[i].output_area.element[0].innerText);
   """ % (i)
   display(Javascript(js_code))
+  
+@register_line_magic
+def ec(i):
+    """execute cell In[i]"""
+    cc(i)
+    display(Javascript('IPython.notebook.execute_cell_range(IPython.notebook.get_selected_index()-1, IPython.notebook.get_selected_index())'))  
  
 s = """
 Jupyter.keyboard_manager.edit_shortcuts.add_shortcut('ctrl-l', {

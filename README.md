@@ -94,7 +94,7 @@ can also match the cc fuction:
 - alt-l to `cc -2`
 - ctrl-alt-l to `cc -3`
 
-We used `Jupyter.notebook.get_selected_index()-2` for Insert Input from three cells Above, alt-l.
+We used `Jupyter.notebook.get_selected_index()-2` for Insert Input from two cells Above, alt-l.
 ```
 %%js
 Jupyter.keyboard_manager.edit_shortcuts.add_shortcut('ctrl-l', {

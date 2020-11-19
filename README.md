@@ -152,4 +152,6 @@ IPython magic command %recall or %rep fullfill %cc function for nonnegative inpu
 
 Jupyter environment is uncertain for different installation methods and versions, or different servers or runs: the customized extension in .ipython\profile_default\ipython_config.py may work and also may not work, similarly for the shortcut definition that is saved to .jupyter\nbconfig\notebook.json. For a foolproof approach we can put these definitions in the .ipython\profile_default\startup folder, and in case it is not called in jupyter notebook initialization, run directly at the notebook first line, for example:
 
-```%run -i C:/Users/frank.wang/.ipython/profile_default/startup/99-last.py```  
+```%run -i C:/Users/frank.wang/.ipython/profile_default/startup/99-last.py```
+
+User defined magic like %cc do not work without the % even if %automagic is 1.  

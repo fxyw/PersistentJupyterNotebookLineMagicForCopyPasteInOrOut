@@ -19,16 +19,42 @@ get_ipython().run_line_magic('automagic', '1')
 from IPython.core.interactiveshell import InteractiveShell
 InteractiveShell.ast_node_interactivity = "all"
 from pandas.api.types import is_numeric_dtype
-def m_v(x):return np.mean(x)+np.nan_to_num(pd.Series(sp.stats.moment(x,2)).div(np.mean(x)-min(x))[0])
+def m_v(x):return np.mean(x)+np.nan_to_num(pd.Series(sp.stats.moment(x,2)).div(np.mean(x)-np.min(x))[0])
 def m_s(x):return np.mean(x)+np.nan_to_num(pd.Series(sp.stats.moment(x,3)).div(sp.stats.moment(x,2))[0])
-def m_k(x):return min(x)+np.nan_to_num(np.sqrt(pd.Series(sp.stats.moment(x,4)).div(sp.stats.moment(x,2))[0]))
+def m_k(x):return np.min(x)+np.nan_to_num(np.sqrt(pd.Series(sp.stats.moment(x,4)).div(sp.stats.moment(x,2))[0]))
 def spvar(x):return sp.stats.moment(x.dropna(),2)
 def esf2(x):return np.nan_to_num(pd.Series(sp.stats.kurtosis(x)).divide(sp.stats.skew(x)**2)[0] if sp.stats.skew(x)!=0 else np.nan)
 def cv1(x):return np.nan_to_num(pd.Series(spstd(x)).div(np.mean(x))[0] if np.mean(x)!=0 else np.nan)
 def sf1(x):return np.nan_to_num(sp.stats.moment(x,4)*sp.stats.moment(x,2)/sp.stats.moment(x,3)**2 if sp.stats.moment(x,3)!=0 else np.nan)
-def msf(x):return min(sp.stats.kurtosis(x,fisher=False),pd.Series(sp.stats.kurtosis(x,fisher=False)).divide(sp.stats.skew(x)**2)[0])
+def msf(x):return np.nan_to_num(sp.stats.kurtosis(x,fisher=False) if np.abs(sp.stats.skew(x))<1 else pd.Series(sp.stats.kurtosis(x,fisher=False)).divide(sp.stats.skew(x)**2)[0])
 def spstd(x):return np.sqrt(sp.stats.moment(x.dropna(),2)) if is_numeric_dtype(x) else np.nan
-def hdmedian1(x):return np.nan_to_num(sp.stats.mstats.hdmedian(x) if max(x)>min(x) else min(x))
+def hdmedian1(x):return np.nan_to_num(sp.stats.mstats.hdmedian(x) if np.max(x)>np.min(x) else np.min(x))
+def n_c(x):return np.sqrt(len(x))
+def n_s(x):return np.nan_to_num(pd.Series(sp.stats.moment(x,3)).div(sp.stats.moment(x,2)).div(np.max(x)-np.mean(x))[0])
+def n_k(x):return np.nan_to_num(np.sqrt(pd.Series(sp.stats.moment(x,4)).div(sp.stats.moment(x,2))).div(np.max(x)-np.min(x))[0])
+def s_k(x):return np.sqrt(sp.stats.kurtosis(x,fisher=False))
+def s_m(x):return np.sqrt(np.max(x)) if np.max(x)>0 else -np.sqrt(-np.max(x))
+def nsf(x):return np.nan_to_num(np.sqrt(sp.stats.kurtosis(x,fisher=False))*(-1 if sp.stats.skew(x)<0 else 1) if np.abs(sp.stats.skew(x))<1 else pd.Series(np.sqrt(sp.stats.kurtosis(x,fisher=False))).divide(sp.stats.skew(x))[0])
+def s_f(x):return np.nan_to_num(pd.Series(np.sqrt(sp.stats.kurtosis(x,fisher=False))).divide(sp.stats.skew(x))[0] if sp.stats.skew(x)!=0 else np.nan)
+def mad(x):return np.nan_to_num(pd.Series(sp.stats.median_abs_deviation(x,scale='normal')).div(np.median(x))[0] if np.median(x)!=0 else np.nan)
+def mad1(x):return np.nan_to_num(pd.Series(sp.stats.median_abs_deviation(x,scale='normal')).div(sp.stats.mstats.hdmedian(x).data.tolist())[0] if np.max(x)>np.min(x) else np.nan)
+def mad2(x):return np.nan_to_num(pd.Series(sp.stats.median_abs_deviation(x,scale='normal')).div(hdmedian1(x))[0] if hdmedian1(x)!=0 else np.nan)
+def mad3(x):return np.nan_to_num(pd.Series(sp.stats.median_abs_deviation(x,scale='normal')).div(np.mean(x))[0] if np.mean(x)!=0 else np.nan)
+def mad4(x):return np.nan_to_num(pd.Series(sp.stats.median_abs_deviation(x,scale='normal')).div(mod1(x))[0] if mod1(x)!=0 else np.nan)
+def n_v(x):return np.nan_to_num(pd.Series(sp.stats.moment(x,2)).div(np.mean(x)-np.min(x)).div(np.max(x)-np.mean(x))[0])
+def sef(x):return np.nan_to_num(pd.Series(np.sqrt(sp.stats.kurtosis(x)) if sp.stats.kurtosis(x)>0 else -np.sqrt(-sp.stats.kurtosis(x))).divide(sp.stats.skew(x))[0] if sp.stats.skew(x)!=0 else np.nan)
+def smv(x):return np.sqrt(m_v(x)) if m_v(x)>0 else -np.sqrt(-m_v(x))
+def sms(x):return np.sqrt(m_s(x)) if m_s(x)>0 else -np.sqrt(-m_s(x))
+def smk(x):return np.sqrt(m_k(x)) if m_k(x)>0 else -np.sqrt(-m_k(x))
+def cmv(x):return np.cbrt(m_v(x))
+def cms(x):return np.cbrt(m_s(x))
+def cmk(x):return np.cbrt(m_k(x))
+def c_c(x):return np.cbrt(len(x))
+def c_k(x):return np.cbrt(sp.stats.kurtosis(x,fisher=False))
+def c_m(x):return np.cbrt(np.max(x))
+import re
+p = re.compile('([^a-z_1-9]+)([a-z_1-9]*)')
+import itertools
 from io import StringIO
 import requests
 def read_url(url):return pd.read_csv(StringIO(requests.get(url).text))
@@ -46,7 +72,7 @@ from scipy.stats import mode
 def mod1(x):return np.nan_to_num(mode(x)[0][0])
 import copy
 def r2saessecount(y,prd1):
-    print([1 - ((y -prd1)**2).sum() / ((y -y.mean())**2).sum(), sum(map(abs,y-prd1)), sum(map(lambda x: np.power(x,2),y-prd1)), sum(map(lambda x: 1 if abs(x)>=0.5 else 0,y-prd1))])
+    print([1 - ((y -prd1)**2).sum() / ((y -y.mean())**2).sum(), sum(list(map(abs,y-prd1))), sum(list(map(lambda x: np.power(x,2),y-prd1))), sum(list(map(lambda x: 1 if abs(x)>=0.5 else 0,y-prd1)))])
 def fittoextreme(df, cols, target): return df.groupby(cols).apply(lambda group:group[target].count()-group[target].value_counts().max()).sum()
 from patsy import ModelDesc
 def bar_plot(shap_values, cols, h=12):
@@ -56,7 +82,7 @@ def bar_plot(shap_values, cols, h=12):
    from matplotlib import rcParams
    rcParams['figure.figsize'] = 12, h
    rcParams['font.size'] = 11
-   df=pd.DataFrame({'x':cols, 'y':np.mean(abs(shap_values),0).tolist()})
+   df=pd.DataFrame({'x':cols, 'y':np.mean(np.abs(shap_values),0).tolist()})
    splot=sns.barplot(y='x', x='y', data=df, order=df.sort_values('y', ascending = False).x.to_list(), color='blue')
    for p in splot.patches:
        splot.annotate(format(p.get_width(), '.3f'), 
